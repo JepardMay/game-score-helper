@@ -28,13 +28,13 @@ function PlayersList({ game, setGame, editPlayer }) {
 				{player.name}
 			</div>
 			<div>
-				{/* <button
+				<button
 					type='button'
 					className='btn btn-default'
 					aria-label='Edit player'
 					onClick={editPlayer}>
 					<PencilSquare />
-				</button> */}
+				</button>
 				<button
 					type='button'
 					className='btn btn-default'

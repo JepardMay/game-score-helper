@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { Table, Input, List, ListInlineItem, Button } from 'reactstrap';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 
 function GameView({ game, setGame }) {
 	const [score, setScore] = useState('');
+	const [hidden, setHidden] = useState(false);
 
 	const inputScore = useRef(null);
 
@@ -46,7 +48,7 @@ function GameView({ game, setGame }) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr style={hidden ? { display: 'none' } : null}>
 					{game.players.map((player, i) => (
 						<th>{player.score}</th>
 					))}
@@ -88,7 +90,18 @@ function GameView({ game, setGame }) {
 
 	return (
 		<section className='w-100'>
-			<h2 className='h2'>Game Table</h2>
+			<h2 className='h2 mb-4 d-flex justify-content-between'>
+				Game Table
+				<button
+					type='button'
+					className='btn btn-light'
+					aria-label='Hide/show score'
+					onClick={() => {
+						setHidden(!hidden);
+					}}>
+					{hidden ? <Eye /> : <EyeSlash />}
+				</button>
+			</h2>
 			<Table className='w-100' dark>
 				{playersTable}
 			</Table>
@@ -103,19 +116,20 @@ function GameView({ game, setGame }) {
 			<div className='row mx-auto'>
 				<div className='col-12 col-sm-6'>
 					<Button
-						color='danger'
+						color='warning'
 						size='lg'
+						warning
 						block
 						className='mt-5 mb-5'
 						onClick={() => {
 							setGame({ ...game, isPlaying: false });
 						}}>
-						Finish the Game
+						Back to Main Screen
 					</Button>
 				</div>
 				<div className='col-12 col-sm-6'>
 					<Button color='danger' size='lg' block className='mt-5 mb-5' onClick={resetScore}>
-						Reset score
+						Reset Score
 					</Button>
 				</div>
 			</div>

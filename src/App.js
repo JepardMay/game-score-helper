@@ -9,7 +9,7 @@ function App() {
 		: {
 				isPlaying: false,
 				players: [],
-				editingPlayer: false,
+				editingPlayer: null,
 		  };
 
 	const [game, setGame] = useState(initialValue);

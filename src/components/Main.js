@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Input, InputGroup, InputGroupAddon, Button } from 'reactstrap';
 import PlayersList from './PlayersList';
 
@@ -25,8 +25,13 @@ function Main({ game, setGame }) {
 	];
 
 	const [input, setInput] = useState('');
+	const [editing, setEditing] = useState(null);
 
 	const inputPlayer = useRef(null);
+
+	useEffect(() => {
+		inputPlayer.current.focus();
+	}, [input]);
 
 	function Player(name) {
 		this.name = name;
@@ -40,7 +45,7 @@ function Main({ game, setGame }) {
 			const newPlayers = input
 				.split(',')
 				.map(playerName =>
-					playerName !== '' && playerName !== ' ' ? new Player(playerName) : null,
+					playerName !== '' && playerName !== ' ' ? new Player(playerName.trim()) : null,
 				);
 			setGame({
 				...game,
@@ -48,17 +53,23 @@ function Main({ game, setGame }) {
 			});
 
 			setInput('');
-			inputPlayer.current.focus();
 		}
 	};
 
 	const editPlayer = e => {
-		// if (!game.editingPlayer) {
-		// 	const editedIndex = Number(e.target.closest('li').id.split('player-').join(''));
-		// 	setInput(e.target.closest('li').textContent);
-		// } else if (input.trim() !== '') {
-		// 	setInput('');
-		// }
+		if (!editing) {
+			setEditing(e.target.closest('li').id.split('player-').join(''));
+			setInput(e.target.closest('li').textContent.trim());
+		} else if (editing && input.trim() !== '') {
+			const newPlayers = [...game.players];
+			newPlayers[editing] = {
+				...newPlayers[editing],
+				name: input.trim(),
+			};
+			setGame({ ...game, players: newPlayers });
+			setInput('');
+			setEditing(null);
+		}
 	};
 
 	return (
@@ -74,14 +85,12 @@ function Main({ game, setGame }) {
 						ref={inputPlayer}
 						placeholder='Player Name'
 						onChange={e => setInput(e.target.value)}
-						onKeyPress={e =>
-							e.key === 'Enter' ? (game.editingPlayer ? editPlayer() : addPlayer()) : null
-						}
+						onKeyPress={e => (e.key === 'Enter' ? (editing ? editPlayer() : addPlayer()) : null)}
 						value={input}
 						autoFocus
 					/>
 					<InputGroupAddon addonType='append'>
-						{game.editingPlayer ? (
+						{editing ? (
 							<Button color='warning' onClick={editPlayer}>
 								Edit player
 							</Button>
