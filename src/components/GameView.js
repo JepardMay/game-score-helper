@@ -73,9 +73,8 @@ function GameView({ game, setGame }) {
 	);
 
 	const playersButtons = game.players.map((player, i) => (
-		<ListInlineItem key={'btn-' + i}>
+		<ListInlineItem key={'btn-' + i} className='mt-2'>
 			<Button
-				className='mt-2'
 				id={'btn-' + i}
 				onClick={addScore}
 				style={{
@@ -107,28 +106,28 @@ function GameView({ game, setGame }) {
 			</Table>
 			<Input
 				ref={inputScore}
+				type='number'
 				placeholder='Type score'
 				onChange={e => setScore(e.target.value)}
 				value={score}
 				autoFocus
 			/>
 			<List type='inline'>{playersButtons}</List>
-			<div className='row mx-auto'>
-				<div className='col-12 col-sm-6'>
+			<div className='row mx-auto mt-5'>
+				<div className='col-12 col-sm-6 p-0 pr-1 pr-sm-0 pb-mb-2'>
 					<Button
 						color='warning'
 						size='lg'
 						warning
 						block
-						className='mt-5 mb-5'
 						onClick={() => {
 							setGame({ ...game, isPlaying: false });
 						}}>
 						Back to Main Screen
 					</Button>
 				</div>
-				<div className='col-12 col-sm-6'>
-					<Button color='danger' size='lg' block className='mt-5 mb-5' onClick={resetScore}>
+				<div className='col-12 col-sm-6 p-0'>
+					<Button color='danger' size='lg' block onClick={resetScore}>
 						Reset Score
 					</Button>
 				</div>
