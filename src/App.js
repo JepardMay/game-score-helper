@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container } from 'reactstrap';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -21,7 +22,7 @@ function App() {
 	}, [game]);
 
 	return (
-		<div className='container min-vh-100 d-flex flex-column'>
+		<Container className='min-vh-100 d-flex flex-column'>
 			<Header isPlaying={game.isPlaying} />
 			<main className='flex-grow-1 d-flex flex-column justify-content-center align-items-center'>
 				{!game.isPlaying ? (
@@ -31,7 +32,7 @@ function App() {
 				)}
 			</main>
 			<Footer />
-		</div>
+		</Container>
 	);
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalBody } from 'reactstrap';
-import { XLg } from 'react-bootstrap-icons';
+import { XLg, QuestionSquareFill } from 'react-bootstrap-icons';
 
 function Header({ isPlaying }) {
 	const [modal, setModal] = useState(false);
@@ -8,12 +8,15 @@ function Header({ isPlaying }) {
 	const toggle = () => setModal(!modal);
 
 	return (
-		<header class='d-flex justify-content-between align-items-center mb-3 p-2'>
+		<header className='d-flex justify-content-between align-items-center mb-3 p-2'>
 			<h4 className='text-uppercase m-0' style={{ visibility: isPlaying ? 'unset' : 'hidden' }}>
 				Game Score App
 			</h4>
-			<Button size='sm' color='secondary' onClick={toggle}>
-				How to Use This App
+			<Button size='sm' color='secondary' className='d-flex align-items-center' onClick={toggle}>
+				<QuestionSquareFill />
+				<span className='d-none d-sm-block' style={{ marginLeft: '0.5rem' }}>
+					How to Use This App
+				</span>
 			</Button>
 			<Modal isOpen={modal} toggle={toggle}>
 				<Button

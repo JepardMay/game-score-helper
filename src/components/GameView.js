@@ -1,15 +1,17 @@
 import React, { useState, useRef } from 'react';
 import { Table, Input, List, ListInlineItem, Button } from 'reactstrap';
-import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import { Eye, EyeSlash, ArrowReturnLeft, XOctagonFill } from 'react-bootstrap-icons';
 
 function GameView({ game, setGame }) {
 	const [score, setScore] = useState('');
 	const [hidden, setHidden] = useState(false);
+	const [error, setError] = useState(false);
 
 	const inputScore = useRef(null);
 
 	const addScore = e => {
 		if (score.trim() !== '') {
+			setError(false);
 			const index = e.target.id.split('btn-').join('');
 			const newPlayers = [...game.players];
 			const userScore = newPlayers[index].score;
@@ -21,6 +23,8 @@ function GameView({ game, setGame }) {
 			setGame({ ...game, players: newPlayers });
 			setScore('');
 			inputScore.current.focus();
+		} else {
+			setError(true);
 		}
 	};
 
@@ -39,6 +43,7 @@ function GameView({ game, setGame }) {
 				<tr>
 					{game.players.map((player, i) => (
 						<th
+							key={i}
 							style={{
 								backgroundColor: '#' + player.color,
 							}}>
@@ -50,12 +55,12 @@ function GameView({ game, setGame }) {
 			<tbody>
 				<tr style={hidden ? { display: 'none' } : null}>
 					{game.players.map((player, i) => (
-						<th>{player.score}</th>
+						<th key={i}>{player.score}</th>
 					))}
 				</tr>
 				<tr>
 					{game.players.map((player, i) => (
-						<th>
+						<th key={i}>
 							{player.last === null ? (
 								'-'
 							) : player.last > 0 ? (
@@ -108,29 +113,42 @@ function GameView({ game, setGame }) {
 				ref={inputScore}
 				type='number'
 				placeholder='Type score'
-				onChange={e => setScore(e.target.value)}
+				className={error ? 'border-danger' : null}
+				onChange={e => {
+					setScore(e.target.value);
+					setError(false);
+				}}
 				value={score}
 				autoFocus
 			/>
 			<List type='inline'>{playersButtons}</List>
-			<div className='row mx-auto mt-5'>
-				<div className='col-12 col-sm-6 p-0 pr-1 pr-sm-0 pb-mb-2'>
-					<Button
-						color='warning'
-						size='lg'
-						warning
-						block
-						onClick={() => {
-							setGame({ ...game, isPlaying: false });
-						}}>
-						Back to Main Screen
-					</Button>
-				</div>
-				<div className='col-12 col-sm-6 p-0'>
-					<Button color='danger' size='lg' block onClick={resetScore}>
-						Reset Score
-					</Button>
-				</div>
+			<div className='d-flex justify-content-between align-items-center mt-4'>
+				<Button
+					color='warning'
+					size='lg'
+					className='d-flex align-items-center'
+					onClick={() => {
+						setGame({ ...game, isPlaying: false });
+					}}
+					style={{ marginTop: '1rem' }}>
+					<ArrowReturnLeft style={{ marginRight: '0.5rem' }} />
+					Back{' '}
+					<span className='d-none d-sm-block' style={{ marginLeft: '0.5rem' }}>
+						to Main
+					</span>
+				</Button>
+				<Button
+					color='danger'
+					size='lg'
+					className='d-flex align-items-center'
+					onClick={resetScore}
+					style={{ marginLeft: '1rem', marginTop: '1rem' }}>
+					Reset{' '}
+					<span className='d-none d-sm-block' style={{ marginLeft: '0.5rem' }}>
+						Score
+					</span>
+					<XOctagonFill style={{ marginLeft: '0.5rem' }} />
+				</Button>
 			</div>
 		</section>
 	);

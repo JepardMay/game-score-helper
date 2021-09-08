@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
-import { PencilSquare, TrashFill } from 'react-bootstrap-icons';
+import { PencilSquare, TrashFill, PeopleFill } from 'react-bootstrap-icons';
 
 function PlayersList({ game, setGame, editPlayer }) {
 	const deletePlayer = e => {
@@ -27,7 +27,7 @@ function PlayersList({ game, setGame, editPlayer }) {
 				</Badge>{' '}
 				{player.name}
 			</div>
-			<div>
+			<div className='flex-shrink-0 d-flex flex-nowrap'>
 				<button
 					type='button'
 					className='btn btn-default'
@@ -48,8 +48,11 @@ function PlayersList({ game, setGame, editPlayer }) {
 
 	return (
 		<section className='w-75'>
-			<h2 className='h2 mb-3 d-flex justify-content-between'>
-				Players
+			<h2 className='h3 mb-3 d-flex justify-content-between'>
+				<span>
+					<PeopleFill style={{ marginRight: '1rem' }} />
+					Players
+				</span>
 				<button
 					type='button'
 					className='btn btn-danger'
