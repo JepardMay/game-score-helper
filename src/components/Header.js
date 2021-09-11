@@ -30,7 +30,7 @@ function Header({ isPlaying }) {
 					<h2 className='h4 text-center text-primary'>How To Use This App</h2>
 					<ol>
 						<li className='mt-5'>
-							Type all players' names one by one or slitting them by a comma in the input in the
+							Type all players' names one by one or splitting them by a comma in the input in the
 							center.
 						</li>
 						<li className='mt-5'>
