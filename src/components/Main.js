@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Input, InputGroup, InputGroupAddon, Button } from 'reactstrap';
 import { PlusSquareFill, PencilSquare } from 'react-bootstrap-icons';
 
 import PlayersList from './PlayersList';
 
-function Main({ game, setGame }) {
+function Main({ game, setGame, focusInput }) {
 	const colors = [
 		'593F62',
 		'7B6D8D',
@@ -30,12 +30,6 @@ function Main({ game, setGame }) {
 	const [editing, setEditing] = useState(null);
 	const [error, setError] = useState(false);
 
-	const inputPlayer = useRef(null);
-
-	useEffect(() => {
-		inputPlayer.current.focus();
-	}, [input]);
-
 	function Player(name) {
 		this.name = name;
 		this.score = 0;
@@ -60,6 +54,7 @@ function Main({ game, setGame }) {
 		} else {
 			setError(true);
 		}
+		focusInput();
 	};
 
 	const editPlayer = e => {
@@ -79,6 +74,7 @@ function Main({ game, setGame }) {
 		} else if (editing && input.trim() === '') {
 			setError(true);
 		}
+		focusInput();
 	};
 
 	return (
@@ -91,7 +87,6 @@ function Main({ game, setGame }) {
 				<h2 className='h4 sr-only'>Add players</h2>
 				<InputGroup className='mb-5'>
 					<Input
-						ref={inputPlayer}
 						placeholder='Player Name'
 						className={error ? 'border-danger' : null}
 						onChange={e => {

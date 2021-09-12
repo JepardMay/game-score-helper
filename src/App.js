@@ -13,9 +13,15 @@ function App() {
 				isPlaying: false,
 				players: [],
 				editingPlayer: null,
+				visibility: true,
 		  };
 
 	const [game, setGame] = useState(initialValue);
+
+	const focusInput = () => {
+		const input = document.querySelector('input');
+		input.focus();
+	};
 
 	useEffect(() => {
 		localStorage.setItem('game-score', JSON.stringify(game));
@@ -26,9 +32,9 @@ function App() {
 			<Header isPlaying={game.isPlaying} />
 			<main className='flex-grow-1 d-flex flex-column justify-content-center align-items-center'>
 				{!game.isPlaying ? (
-					<Main game={game} setGame={setGame} />
+					<Main game={game} setGame={setGame} focusInput={focusInput} />
 				) : (
-					<GameView game={game} setGame={setGame} />
+					<GameView game={game} setGame={setGame} focusInput={focusInput} />
 				)}
 			</main>
 			<Footer />

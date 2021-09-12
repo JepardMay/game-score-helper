@@ -1,13 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Table, Input, List, ListInlineItem, Button } from 'reactstrap';
 import { Eye, EyeSlash, ArrowReturnLeft, XOctagonFill } from 'react-bootstrap-icons';
 
-function GameView({ game, setGame }) {
+function GameView({ game, setGame, focusInput }) {
 	const [score, setScore] = useState('');
-	const [hidden, setHidden] = useState(false);
 	const [error, setError] = useState(false);
-
-	const inputScore = useRef(null);
 
 	const addScore = e => {
 		if (score.trim() !== '') {
@@ -22,10 +19,10 @@ function GameView({ game, setGame }) {
 			};
 			setGame({ ...game, players: newPlayers });
 			setScore('');
-			inputScore.current.focus();
 		} else {
 			setError(true);
 		}
+		focusInput();
 	};
 
 	const resetScore = () => {
@@ -53,7 +50,7 @@ function GameView({ game, setGame }) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr style={hidden ? { display: 'none' } : null}>
+				<tr style={game.visibility ? { display: 'none' } : null}>
 					{game.players.map((player, i) => (
 						<th key={i}>{player.score}</th>
 					))}
@@ -101,16 +98,15 @@ function GameView({ game, setGame }) {
 					className='btn btn-light'
 					aria-label='Hide/show score'
 					onClick={() => {
-						setHidden(!hidden);
+						setGame({ ...game, visibility: !game.visibility });
 					}}>
-					{hidden ? <Eye /> : <EyeSlash />}
+					{game.visibility ? <Eye /> : <EyeSlash />}
 				</button>
 			</h2>
 			<Table className='w-100' dark>
 				{playersTable}
 			</Table>
 			<Input
-				ref={inputScore}
 				type='number'
 				placeholder='Type score'
 				className={error ? 'border-danger' : null}
